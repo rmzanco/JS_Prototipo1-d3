@@ -10,4 +10,8 @@ Este repositório contém um sample basico de d3, voltado para o experimento de 
 
 * Input de arquivo em texto ordenado (.txt), similar ao mapa de SNPs;
 * Funcionamento da tecnologia em questão (biblioteca) para aceitar os dados processados;
-* Saída dos dados inputados em forma de gráfco.
+* Saída dos dados inputados em forma de gráfico.
+
+## Métodos
+
+* Os métodos GerarGraficoAPartirDeTxt(), GerarJSON(), ExtrairColunas(), ConverterStringParaArrayEmFormaDeCelulas(), MapearColunasParaTransformarEmUmObjeto() são importados do repositório [JS_Prototipo2-c3](https://github.com/rmzanco/JS_Prototipo2-c3)
