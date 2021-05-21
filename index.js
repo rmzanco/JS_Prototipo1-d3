@@ -1,9 +1,9 @@
 var test = 
     [
-        {"name": "www.site1.com", "upload": 200, "download": 200, "total": 400},
-        {"name": "www.site2.com", "upload": 100, "download": 300, "total": 400},
-        {"name": "www.site3.com", "upload": 300, "download": 200, "total": 500},
-        {"name": "www.site4.com", "upload": 400, "download": 100, "total": 500}
+        {name: "www.site1.com", upload: 200, download: 200, total: 400},
+        {name: "www.site2.com", upload: 100, download: 300, total: 400},
+        {name: "www.site3.com", upload: 300, download: 200, total: 500},
+        {name: "www.site4.com", upload: 400, download: 100, total: 500}
     ];
 
 function GerarChart(){
@@ -15,6 +15,8 @@ function GerarChart(){
     svg.append('g').attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
     var x = d3.scaleTime().range([0, width]);
     var y = d3.scaleLinear().range([height, 0]);
+
+    
     x.domain(d3.extent(stocks, (d) => d.date ));
     y.domain(d3.extent(stocks, (d) => d.value ));
 
@@ -56,25 +58,67 @@ function GerarGraficoAPartirDeTxt(event){
     reader.onload = function(){   
         var text = reader.result;
         var jsonObject = GerarJSON(text);       
-        GerarGrafico(jsonObject,'#custom-chart');
+        GerarGrafico(jsonObject);
     };
     console.log(input.files);
     reader.readAsText(input.files[0]);
 }
 
-function GerarGrafico(jsonObject,id) { 
-    //GERAR UM GRÁFICO D3 COM INPUT PRONTO DE EXEMPLO.
+function GerarGrafico(jsonObject) { 
+    var margin = {top: 20, right: 20, bottom: 30, left: 50};
+    var width = 900 - margin.left - margin.right;
+    var height = 500 - margin.top - margin.bottom;
+
+    var svg = d3.select('svg')
+    svg.append('g').attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+    var x = d3.scaleTime().range([0, width]);
+    var y = d3.scaleLinear().range([height, 0]);
+
+    
+    x.domain(d3.extent(jsonObject, (d) => d.date ));
+    y.domain(d3.extent(jsonObject, (d) => d.value ));
+
+    svg.append('g')
+        .attr('class', 'axis axis--x')
+        .attr('transform', 'translate(0,' + height + ')')
+        .call(d3.axisBottom(x));
+
+    svg.append('g')
+        .attr('class', 'axis axis--y')
+        .call(d3.axisLeft(y))
+        .append('text')
+        .attr('class', 'axis-title')
+        .attr('transform', 'rotate(-90)')
+        .attr('y', 6)
+        .attr('dy', '.71em')
+        .style('text-anchor', 'end')
+        .text('Price ($)');
+
+    line = d3.line()
+        .x( (d) => x(d.date) )
+        .y( (d) => y(d.value) );
+
+    svg.append('path')
+        .datum(jsonObject)
+        .attr('class', 'line')
+        .attr('d', line);
 }
 
 function GerarJSON(text) {
-
+    debugger
     var cells = ConverterStringParaArrayEmFormaDeCelulas(text);
     var headings = ExtrairColunas(cells);
     var jsonObject = MapearColunasParaTransformarEmUmObjeto(cells, headings);
+    jsonObject.forEach(element => {
+        element.date = new Date(element.date);
+    });
     return jsonObject;
 }
 
 function ExtrairColunas(cells) {
+    cells[0].forEach(element => {
+        cells[element] = element;
+    });
     return cells.shift();
 }
 
