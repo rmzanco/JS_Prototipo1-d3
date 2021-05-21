@@ -110,7 +110,10 @@ function GerarJSON(text) {
     var headings = ExtrairColunas(cells);
     var jsonObject = MapearColunasParaTransformarEmUmObjeto(cells, headings);
     jsonObject.forEach(element => {
-        element.date = new Date(element.date);
+        var newDate = new Date(element.date);
+        newDate.setDate(newDate.getDate() + 1);
+        element.date = newDate;
+
     });
     return jsonObject;
 }
@@ -734,3 +737,9 @@ var stocks = [
     {date: new Date('2012-04-30'), value: 583.98},
     {date: new Date('2012-05-01'), value: 582.13},
 ];
+
+Date.prototype.addDays = function(days) {
+    var date = new Date(this.valueOf());
+    date.setDate(date.getDate() + days);
+    return date;
+}
