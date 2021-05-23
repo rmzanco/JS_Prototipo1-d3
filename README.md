@@ -23,6 +23,6 @@ Este repositório contém um sample basico de d3, voltado para o experimento de 
 ## Steps:
 
 - [x] Gerar o Line Chart com Hard-Code; - In Trunk! :heavy_check_mark:	
-- [ ] Gerar o Line Chart com input;
+- [x] Gerar o Line Chart com input;
 - [ ] Gerar o Stacked Bar Chart com input;
 - [ ] Gerar o Brush Zoom Chart com input;
